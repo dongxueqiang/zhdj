@@ -181,8 +181,8 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "一组需要" + (zuLunboTime / 1000) + "秒");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(TimeUtils.getNowDate());
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-        calendar.set(Calendar.MINUTE, 10);
+        calendar.set(Calendar.HOUR_OF_DAY, 7);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         long startMills = calendar.getTimeInMillis();
