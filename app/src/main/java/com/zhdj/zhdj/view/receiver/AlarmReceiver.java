@@ -18,6 +18,7 @@ import com.zhdj.zhdj.model.MessageModel;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
 import com.zhdj.zhdj.rxjava.CommonSchedulers;
+import com.zhdj.zhdj.utils.GalleryNative;
 import com.zhdj.zhdj.view.activity.MainActivity;
 import com.zhdj.zhdj.view.activity.SleepActivity;
 import com.zhdj.zhdj.view.service.GetMessageService;
@@ -50,12 +51,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (action == MyRequestCode.INTENT_ALARM_COLSE) {
 //            Log.i("www", "我熄屏了");
             //设备使用状态上传
-            shutdown(context);
             setTerminalStatus(0);
+            shutdown(context);
         } else if (action == MyRequestCode.INTENT_ALARM_OPEN) {
-
-            //设备使用状态上传
-            setTerminalStatus(1);
+//            GalleryNative.setOnTime_RTC(1000);
+//            //设备使用状态上传
+//            setTerminalStatus(1);
         } else if (action == MyRequestCode.INTENT_ALARM_TIME) {
             context.startService(new Intent(context, GetTimeService.class));
         } else if (action == MyRequestCode.INTENT_ALARM_MESSAGE) {

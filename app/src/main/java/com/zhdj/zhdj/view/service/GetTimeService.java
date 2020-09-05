@@ -19,6 +19,7 @@ import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
 import com.zhdj.zhdj.rxjava.CommonSchedulers;
 import com.zhdj.zhdj.utils.DateUtils;
+import com.zhdj.zhdj.utils.GalleryNative;
 import com.zhdj.zhdj.view.receiver.AlarmReceiver;
 
 import java.text.SimpleDateFormat;
@@ -104,40 +105,23 @@ public class GetTimeService extends Service {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
 //        // 这里时区需要设置一下，不然可能个别手机会有8个小时的时间差
         mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-//        if (timeModel.getType() == 2) {
-//            //每星期
-//            mCalendar.set(Calendar.DAY_OF_WEEK, timeModel.getDay());
-//        } else if (timeModel.getType() == 3) {
-//            //每月
-//            mCalendar.set(Calendar.DAY_OF_MONTH, timeModel.getDay());
-//        }
-//
-//        //设置在几点提醒  设置的为13点
-//        mCalendar.set(Calendar.HOUR_OF_DAY, DateUtils.getHour(timeModel.getFunction_time(), DateUtils.FORMAT_FULL));
-//        //设置在几分提醒  设置的为25分
-//        mCalendar.set(Calendar.MINUTE, DateUtils.getMinute(timeModel.getFunction_time(), DateUtils.FORMAT_FULL));
-//        //下面这两个看字面意思也知道
-//        mCalendar.set(Calendar.SECOND, 0);
-//        mCalendar.set(Calendar.MILLISECOND, 0);
-//
-//        long selectTime = mCalendar.getTimeInMillis();
-//        // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
-//        if (systemTime > selectTime) {
-//            mCalendar.add(Calendar.DAY_OF_MONTH, 1);
-//        }
+        if (timeModel.getType() == 1) {
 
-        mCalendar.set(Calendar.HOUR_OF_DAY, 20);
+        } else if (timeModel.getType() == 2) {
+            //每星期
+            mCalendar.set(Calendar.DAY_OF_WEEK, timeModel.getDay());
+        } else if (timeModel.getType() == 3) {
+            //每月
+            mCalendar.set(Calendar.DAY_OF_MONTH, timeModel.getDay());
+        }
+
+        //设置在几点提醒  设置的为13点
+        mCalendar.set(Calendar.HOUR_OF_DAY, DateUtils.getHour(timeModel.getFunction_time(), DateUtils.FORMAT_FULL));
+        //设置在几分提醒  设置的为25分
+        mCalendar.set(Calendar.MINUTE, DateUtils.getMinute(timeModel.getFunction_time(), DateUtils.FORMAT_FULL));
+        //下面这两个看字面意思也知道
         mCalendar.set(Calendar.SECOND, 0);
         mCalendar.set(Calendar.MILLISECOND, 0);
-        if (MyRequestCode.CLOSE == i) {
-            mCalendar.set(Calendar.MINUTE, 29);
-//            Log.i("www", "设置关机时间");
-//            Log.i("www", TimeUtils.date2String(mCalendar.getTime(),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ss")));
-        } else {
-            mCalendar.set(Calendar.MINUTE, 30);
-//            Log.i("www", "设置开机时间");
-//            Log.i("www", TimeUtils.date2String(mCalendar.getTime(),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ss")));
-        }
 
         long selectTime = mCalendar.getTimeInMillis();
         // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
@@ -145,19 +129,23 @@ public class GetTimeService extends Service {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        //AlarmReceiver.class为广播接受者
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.setAction(intentAlarmLog);
-        PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
-        //得到AlarmManager实例
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        /**
-         * 重复提醒
-         * 第一个参数是警报类型；下面有介绍
-         * 第二个参数网上说法不一，很多都是说的是延迟多少毫秒执行这个闹钟，
-         * 第三个参数是重复周期，也就是下次提醒的间隔 毫秒值 我这里是一天后提醒
-         */
-        am.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
+        if (i == MyRequestCode.CLOSE) {
+            //AlarmReceiver.class为广播接受者
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            intent.setAction(intentAlarmLog);
+            PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+            //得到AlarmManager实例
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            /**
+             * 重复提醒
+             * 第一个参数是警报类型；下面有介绍
+             * 第二个参数网上说法不一，很多都是说的是延迟多少毫秒执行这个闹钟，
+             * 第三个参数是重复周期，也就是下次提醒的间隔 毫秒值 我这里是一天后提醒
+             */
+            am.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
+        } else {
+            GalleryNative.setOnTime_RTC(selectTime);
+        }
 //        am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), (1000 * 60 * 60 * 24), pi);
     }
 
