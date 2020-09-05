@@ -73,8 +73,8 @@ public class ShowMessageNewActivity extends BaseActivity {
     ViewPager banner;
     @BindView(R.id.video_view)
     FullScreen mVideoView;
-    @BindView(R.id.web_view)
-    WebView webView;
+//    @BindView(R.id.web_view)
+//    WebView webView;
     @BindView(R.id.rl_show)
     RelativeLayout rlShow;
     @BindView(R.id.iv_background)
@@ -141,7 +141,7 @@ public class ShowMessageNewActivity extends BaseActivity {
                         banner.setVisibility(View.VISIBLE);
                         mVideoView.setVisibility(View.GONE);
                         mVideoView.stopPlayback();
-                        webView.setVisibility(View.GONE);
+//                        webView.setVisibility(View.GONE);
                         if (isFirst || models.getIs_change() == 1) {
 //                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
                             mList.clear();
@@ -154,7 +154,7 @@ public class ShowMessageNewActivity extends BaseActivity {
                         banner.setVisibility(View.GONE);
 //                        banner.stopAutoPlay();
                         mVideoView.setVisibility(View.VISIBLE);
-                        webView.setVisibility(View.GONE);
+//                        webView.setVisibility(View.GONE);
                         mMainViewModel.setPlayTerminal(model.getId());
                         if (isFirst || models.getIs_change() == 1) {
                             mList.clear();
@@ -166,12 +166,12 @@ public class ShowMessageNewActivity extends BaseActivity {
 //                        banner.stopAutoPlay();
                         mVideoView.setVisibility(View.GONE);
                         mVideoView.stopPlayback();
-                        webView.setVisibility(View.VISIBLE);
+//                        webView.setVisibility(View.VISIBLE);
                         mUrl = model.getResources_url();
                         mMainViewModel.setPlayTerminal(model.getId());
                         if (isFirst || models.getIs_change() == 1) {
                             showLoading();
-                            webView.loadUrl("http://view.officeapps.live.com/op/view.aspx?src=" + mUrl + "");
+//                            webView.loadUrl("http://view.officeapps.live.com/op/view.aspx?src=" + mUrl + "");
                         }
                     }
                     isFirst = false;
@@ -390,34 +390,34 @@ public class ShowMessageNewActivity extends BaseActivity {
     }
 
     protected void initWebView() {
-        webView.getSettings().setJavaScriptEnabled(true);
-
-//        webView.addJavascriptInterface(getJavaObject(), "javaObject");
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        // 必须保留，否则无法播放优酷视频，其他的OK
-        webView.getSettings().setDomStorageEnabled(true);
-        // 重写一下，有的时候可能会出现问题
-//        webView.setWebChromeClient(new MyWebChromeClient());
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        //自适应屏幕
-        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                if (mProgressDialog != null) {
-                    mProgressDialog.dismiss();
-                }
-            }
-        });
+//        webView.getSettings().setJavaScriptEnabled(true);
+//
+////        webView.addJavascriptInterface(getJavaObject(), "javaObject");
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//        });
+//        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+//        // 必须保留，否则无法播放优酷视频，其他的OK
+//        webView.getSettings().setDomStorageEnabled(true);
+//        // 重写一下，有的时候可能会出现问题
+////        webView.setWebChromeClient(new MyWebChromeClient());
+//        webView.getSettings().setAllowFileAccess(true);
+//        webView.getSettings().setAllowFileAccessFromFileURLs(true);
+//        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+//        //自适应屏幕
+//        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                if (mProgressDialog != null) {
+//                    mProgressDialog.dismiss();
+//                }
+//            }
+//        });
     }
 
     private void startThread() {
