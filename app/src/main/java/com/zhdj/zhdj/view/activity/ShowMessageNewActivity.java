@@ -532,7 +532,7 @@ public class ShowMessageNewActivity extends BaseActivity {
      */
     private void setTextTime() {
         long sysTime = System.currentTimeMillis();//获取系统时间
-        CharSequence sysTimeStr = DateFormat.format("HH:mm:ss.SSS", sysTime);//时间显示格式
+        CharSequence sysTimeStr = DateFormat.format("HH:mm", sysTime);//时间显示格式
         tvTime.setText(sysTimeStr); //更新时间
     }
 
