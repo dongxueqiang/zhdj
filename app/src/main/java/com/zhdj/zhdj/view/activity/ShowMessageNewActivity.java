@@ -46,6 +46,8 @@ import com.zhdj.zhdj.utils.DateUtils;
 import com.zhdj.zhdj.utils.Lunar;
 import com.zhdj.zhdj.view.adapter.LoopViewAdapter;
 import com.zhdj.zhdj.view.service.GetMessageService;
+import com.zhdj.zhdj.view.service.GetSkinService;
+import com.zhdj.zhdj.view.service.GetTimeService;
 import com.zhdj.zhdj.view.weight.FullScreen;
 import com.zhdj.zhdj.viewmodel.MainViewModel;
 import com.zhdj.zhdj.viewmodel.UploadViewModel;
@@ -113,6 +115,8 @@ public class ShowMessageNewActivity extends BaseActivity {
     @Override
     protected void initData() {
         messageDao = new MessageDao(this);
+        startService(new Intent(this, GetTimeService.class));
+        startService(new Intent(this, GetSkinService.class));
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         uploadViewModel = ViewModelProviders.of(this).get(UploadViewModel.class);
         LiveEventBus.get(LiveEvent.REFRESH_SKIN, SkinModel.class).observe(this, skinModel -> {
