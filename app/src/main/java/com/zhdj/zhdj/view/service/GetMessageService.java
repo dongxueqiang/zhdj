@@ -71,8 +71,8 @@ public class GetMessageService extends Service {
                             protected void onSuccess(LiveMessageModel data) {
                                 if (data != null && data.getList().size() != 0) {
 //                                    if (data.get)
-                                    messageDao.deleteAll();
-                                    FileUtils.deleteAllInDir(UploadViewModel.getFileDirName());
+//                                    messageDao.deleteAll();
+//                                    FileUtils.deleteAllInDir(UploadViewModel.getFileDirName());
                                     LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(data);
                                 }
                             }
@@ -81,7 +81,7 @@ public class GetMessageService extends Service {
                             public void onError(Throwable e) {
                                 LiveMessageModel data = new LiveMessageModel();
                                 data.setIs_change(1);
-                                data.setRunning_state(1);
+                                data.setRunning_state(0);
                                 data.setRotation_time(SPUtils.getInstance().getInt(SpConstant.ROTATION_TIME, 3000));
                                 data.setList(messageDao.queryAllMessageModel());
                                 LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(data);
@@ -105,7 +105,7 @@ public class GetMessageService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 1 * 3000 * 1000;  //
+        int anHour = 1 * 60 * 1000;  //
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
         i.setAction(MyRequestCode.INTENT_ALARM_MESSAGE);

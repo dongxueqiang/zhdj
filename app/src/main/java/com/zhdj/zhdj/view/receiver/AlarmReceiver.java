@@ -47,7 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-//        Log.i("www", "action = " + action);
+        Log.i("www", "action = " + action);
         if (action == MyRequestCode.INTENT_ALARM_COLSE) {
 //            Log.i("www", "我熄屏了");
             //设备使用状态上传

@@ -237,12 +237,11 @@ public class ShowMessageNewActivity extends BaseActivity {
             imageView = new ImageView(this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             Glide.with(this).load(messageModel.getImgs_url()).apply(new RequestOptions().error(R.drawable.ic_background)).into(imageView);
-            if (messageModel.getImgs_url().contains("http")) {
-                uploadViewModel.downloadFile(messageModel.getImgs_url(), messageModel.getImgs_name());
-                messageModel.setImgs_url(uploadViewModel.getFileDirName() + "/" + messageModel.getImgs_name());
-//                Log.i("www", "sets name = " + messageModel.getImgs_url());
-                messageDao.insertMessageModel(messageModel);
-            }
+//            if (messageModel.getImgs_url().contains("http")) {
+//                uploadViewModel.downloadFile(messageModel.getImgs_url(), messageModel.getImgs_name());
+//                messageModel.setImgs_url(uploadViewModel.getFileDirName() + "/" + messageModel.getImgs_name());
+//                messageDao.insertMessageModel(messageModel);
+//            }
 
             mImageList.add(imageView);
         }
