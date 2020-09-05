@@ -141,6 +141,7 @@ public class ShowMessageNewActivity extends BaseActivity {
                         if (isFirst || models.getIs_change() == 1) {
 //                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
                             setViewPager(models);
+
                         }
                     } else if (model.getResources_type() == 2) {//视频
                         mIndex = 0;
