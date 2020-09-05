@@ -120,6 +120,11 @@ public class ShowMessageNewActivity extends BaseActivity {
                 updatePic(skinModel);
             }
         });
+        LiveEventBus.get(LiveEvent.REFRESH_SKIN, SkinModel.class).observe(this, skinModel -> {
+            if (skinModel != null) {
+                updatePic(skinModel);
+            }
+        });
 
         startService(new Intent(this, GetMessageService.class));
         LiveEventBus.get(LiveEvent.REFRESH_MESSAGE, LiveMessageModel.class).observe(this, models -> {
@@ -129,8 +134,6 @@ public class ShowMessageNewActivity extends BaseActivity {
                 if (needPlay) {
                     rlNoShow.setVisibility(View.GONE);
                     rlShow.setVisibility(View.VISIBLE);
-                    mList.clear();
-                    mList.addAll(models.getList());
                     MessageModel model = models.getList().get(0);
 //                    Log.i("www", model.toString());
                     if (model.getResources_type() == 1) {//播放图片
@@ -140,6 +143,8 @@ public class ShowMessageNewActivity extends BaseActivity {
                         webView.setVisibility(View.GONE);
                         if (isFirst || models.getIs_change() == 1) {
 //                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
+                            mList.clear();
+                            mList.addAll(models.getList());
                             setViewPager(models);
 
                         }
@@ -151,6 +156,8 @@ public class ShowMessageNewActivity extends BaseActivity {
                         webView.setVisibility(View.GONE);
                         mMainViewModel.setPlayTerminal(model.getId());
                         if (isFirst || models.getIs_change() == 1) {
+                            mList.clear();
+                            mList.addAll(models.getList());
                             playVideo(mList.get(mIndex).getResources_url(), models.getRunning_state() == 1);
                         }
                     } else if (model.getResources_type() == 3) {//文档
@@ -177,10 +184,10 @@ public class ShowMessageNewActivity extends BaseActivity {
                     if (mVideoView != null && mVideoView.isPlaying()) {
                         mVideoView.stopPlayback();
                     }
+                    isFirst = true;
                 }
             }
         });
-//        setViewPager(models);
     }
 
     ImageView imageView;
@@ -215,7 +222,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "应该初于第" + pos + "张");
 
         long zaiyu = yushu % models.getRotation_time();
-//        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
+        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
 
         loopTime = models.getRotation_time() - zaiyu;
 //        Log.i("www", "应该睡眠" + loopTime + "毫秒");
@@ -237,11 +244,6 @@ public class ShowMessageNewActivity extends BaseActivity {
             imageView = new ImageView(this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             Glide.with(this).load(messageModel.getImgs_url()).apply(new RequestOptions().error(R.drawable.ic_background)).into(imageView);
-//            if (messageModel.getImgs_url().contains("http")) {
-//                uploadViewModel.downloadFile(messageModel.getImgs_url(), messageModel.getImgs_name());
-//                messageModel.setImgs_url(uploadViewModel.getFileDirName() + "/" + messageModel.getImgs_name());
-//                messageDao.insertMessageModel(messageModel);
-//            }
 
             mImageList.add(imageView);
         }
@@ -285,34 +287,10 @@ public class ShowMessageNewActivity extends BaseActivity {
         int currentPosition = Integer.MAX_VALUE / 2 - m;
         banner.setCurrentItem(nowPos);
         isRunning = false;
-//        mLoopThread = new LoopThread();
-//        mLoopThread.start();
     }
 
     boolean isRunning = false;
     long loopTime = 5000;
-    private int currentPos = 0;
-    private LoopThread mLoopThread;
-
-    class LoopThread extends Thread {
-        @Override
-        public void run() {
-            isRunning = true;
-            while (isRunning) {
-                try {
-                    Thread.sleep(loopTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        banner.setCurrentItem(banner.getCurrentItem() + 1);
-                    }
-                });
-            }
-        }
-    }
 
     //在主线程里面处理消息并更新UI界面
     private Handler mHandler = new Handler() {
@@ -323,15 +301,8 @@ public class ShowMessageNewActivity extends BaseActivity {
                 case 1:
                     setTextTime();
                     break;
-                case 2:
-//                    tvStartTime.setText("开始时间\n" + TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
-//                    Log.i("www", TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
-//                    banner.start();
-//                    banner.onPageSelected(3);
-                    break;
                 case 3:
-//                    Log.i("www", "时间：\n" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
-                    Log.i("www", "要动：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
+//                    Log.i("www", "要动：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
                     banner.setCurrentItem(banner.getCurrentItem() + 1);
                     break;
                 default:
@@ -363,58 +334,11 @@ public class ShowMessageNewActivity extends BaseActivity {
         tvTextBottom.setText(lunar.toString());
     }
 
-    //图片
-    private void startBanner(int rotation_time, boolean b) {
-//        //设置banner样式
-//        banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
-//        //设置图片加载器
-//        banner.setImageLoader(new GlideImageLoader());
-//        //设置图片集合
-//        banner.setImages(mList);
-//        //设置banner动画效果
-////        banner.setBannerAnimation(Transformer.DepthPage);
-//        banner.setBannerAnimation(Transformer.Stack);
-//        //设置自动轮播，默认为true
-//        banner.isAutoPlay(false);
-//        //设置轮播时间
-////        banner.setDelayTime(3000);
-//        banner.setDelayTime(rotation_time);
-//        //设置指示器位置（当banner模式中有指示器时）
-//        banner.setIndicatorGravity(BannerConfig.CENTER);
-////        banner.setOnBannerListener(position -> {
-////           banner.
-////        });
-//        //banner设置方法全部调用完毕时最后调用
-//        banner.start();
-//        banner.toRealPosition(3);
-//        mHandler.sendEmptyMessageDelayed(2, 5000);
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-    }
-
-    public class GlideImageLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            /**
-             注意：
-             1.图片加载器由自己选择，这里不限制，只是提供几种使用方法
-             2.返回的图片路径为Object类型，由于不能确定你到底使用的那种图片加载器，
-             传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
-             切记不要胡乱强转！
-             */
-            //Glide 加载图片简单用法
-            MessageModel model = (MessageModel) path;
-            mMainViewModel.setPlayTerminal(model.getId());
-            Glide.with(context).load(model.getResources_url()).into(imageView);
-
-        }
-
     }
 
     private void playVideo(String uri, boolean b) {
@@ -458,18 +382,6 @@ public class ShowMessageNewActivity extends BaseActivity {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
                 //信息回调
-//                what 对应返回的值如下
-//                public static final int MEDIA_INFO_UNKNOWN = 1;  媒体信息未知
-//                public static final int MEDIA_INFO_VIDEO_TRACK_LAGGING = 700; 媒体信息视频跟踪滞后
-//                public static final int MEDIA_INFO_VIDEO_RENDERING_START = 3; 媒体信息\视频渲染\开始
-//                public static final int MEDIA_INFO_BUFFERING_START = 701; 媒体信息缓冲启动
-//                public static final int MEDIA_INFO_BUFFERING_END = 702; 媒体信息缓冲结束
-//                public static final int MEDIA_INFO_NETWORK_BANDWIDTH = 703; 媒体信息网络带宽（703）
-//                public static final int MEDIA_INFO_BAD_INTERLEAVING = 800; 媒体-信息-坏-交错
-//                public static final int MEDIA_INFO_NOT_SEEKABLE = 801; 媒体信息找不到
-//                public static final int MEDIA_INFO_METADATA_UPDATE = 802; 媒体信息元数据更新
-//                public static final int MEDIA_INFO_UNSUPPORTED_SUBTITLE = 901; 媒体信息不支持字幕
-//                public static final int MEDIA_INFO_SUBTITLE_TIMED_OUT = 902; 媒体信息字幕超时
 
                 return false; //如果方法处理了信息，则为true；如果没有，则为false。返回false或根本没有OnInfoListener，将导致丢弃该信息。
             }

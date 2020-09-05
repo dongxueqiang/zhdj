@@ -105,12 +105,12 @@ public class GetMessageService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 1 * 60 * 1000;  //
+        int anHour = 1 * 20 * 1000; // 这是十分钟的毫秒数
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
         i.setAction(MyRequestCode.INTENT_ALARM_MESSAGE);
         PendingIntent pi = PendingIntent.getBroadcast(this, MyRequestCode.MESSAGE, i, 0);
-        manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
         return super.onStartCommand(intent, flags, startId);
     }
 }
