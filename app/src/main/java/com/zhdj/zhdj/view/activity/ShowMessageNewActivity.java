@@ -36,7 +36,6 @@ import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
 import com.zhdj.zhdj.R;
 import com.zhdj.zhdj.base.BaseActivity;
-import com.zhdj.zhdj.dao.MessageDao;
 import com.zhdj.zhdj.event.LiveEvent;
 import com.zhdj.zhdj.global.SpConstant;
 import com.zhdj.zhdj.model.LiveMessageModel;
@@ -105,7 +104,6 @@ public class ShowMessageNewActivity extends BaseActivity {
     private boolean isFirst = true;
     private ProgressDialog mProgressDialog;
     private boolean needPlay = true;
-    private MessageDao messageDao;
 
     @Override
     protected int getLayoutId() {
@@ -114,7 +112,6 @@ public class ShowMessageNewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        messageDao = new MessageDao(this);
         startService(new Intent(this, GetTimeService.class));
         startService(new Intent(this, GetSkinService.class));
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);

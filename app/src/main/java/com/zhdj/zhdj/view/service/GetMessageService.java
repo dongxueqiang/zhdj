@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.zhdj.zhdj.dao.MessageDao;
 import com.zhdj.zhdj.event.LiveEvent;
 import com.zhdj.zhdj.global.MyRequestCode;
 import com.zhdj.zhdj.global.SpConstant;
@@ -31,6 +30,7 @@ import com.zhdj.zhdj.viewmodel.UploadViewModel;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,7 +42,6 @@ import java.util.List;
  */
 public class GetMessageService extends Service {
 
-    private MessageDao messageDao;
 
     @Nullable
     @Override
@@ -53,7 +52,6 @@ public class GetMessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        messageDao = new MessageDao(this);
     }
 
     @Override
@@ -83,7 +81,7 @@ public class GetMessageService extends Service {
                                 data.setIs_change(1);
                                 data.setRunning_state(0);
                                 data.setRotation_time(SPUtils.getInstance().getInt(SpConstant.ROTATION_TIME, 3000));
-                                data.setList(messageDao.queryAllMessageModel());
+                                data.setList(new ArrayList<>());
                                 LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(data);
                             }
 
