@@ -33,7 +33,7 @@ public class MainViewModel extends BaseViewModel {
     public MutableLiveData<List<MenuModel>> menuList = new MutableLiveData<>();
     public MutableLiveData<List<MessageModel>> msgList = new MutableLiveData<>();
     public MutableLiveData<MessageModel> msgDetail = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isPaiModel = new MutableLiveData<>();
+    public MutableLiveData<Integer> isPaiModel = new MutableLiveData<>();
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -46,18 +46,19 @@ public class MainViewModel extends BaseViewModel {
                 .subscribe(new BaseObserver<Integer>() {
                     @Override
                     protected void onSuccess(Integer data) {
-                        isPaiModel.setValue(data == 1);
+                        isPaiModel.setValue(data);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-
+                        isPaiModel.setValue(-1);
                     }
 
                     @Override
                     protected void onFailure(BaseModel<Integer> model) {
                         super.onFailure(model);
+                        isPaiModel.setValue(-1);
                     }
                 });
     }
@@ -118,7 +119,7 @@ public class MainViewModel extends BaseViewModel {
                 });
     }
 
-    public void setPlayTerminal(int id) {
+    public void setPlayTerminal(long id) {
         Map<String, Object> map = new HashMap<>();
         map.put("s", "App.Terminal.PlayTerminal");
         map.put("id", id);

@@ -3,12 +3,16 @@ package com.zhdj.zhdj.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 /**
  * @ClassName MessageModel
  * @Author dongxueqiang
  * @Date 2020/7/14 21:50
  * @Title
  */
+@Entity
 public class MessageModel implements Parcelable {
     /**
      * id : 1
@@ -32,10 +36,9 @@ public class MessageModel implements Parcelable {
      * department : 设计部
      * is_self : 1
      * num : 7
-     *
      */
-
-    private int id;
+    @Id
+    private long id;
     private String resources_name;
     private int resources_type;
     private String imgs_url;
@@ -59,9 +62,6 @@ public class MessageModel implements Parcelable {
     private int is_self;
     private int num;
 
-    public int getId() {
-        return id;
-    }
 
     public long getStartTime() {
         return startTime;
@@ -187,6 +187,14 @@ public class MessageModel implements Parcelable {
         this.resources_origin = resources_origin;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getIs_delete() {
         return is_delete;
     }
@@ -277,7 +285,7 @@ public class MessageModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.resources_name);
         dest.writeInt(this.resources_type);
         dest.writeString(this.imgs_url);
@@ -303,7 +311,7 @@ public class MessageModel implements Parcelable {
     }
 
     protected MessageModel(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.resources_name = in.readString();
         this.resources_type = in.readInt();
         this.imgs_url = in.readString();

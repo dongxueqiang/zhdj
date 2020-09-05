@@ -108,4 +108,11 @@ public interface ApiService {
      */
     @POST("http://dj.qsmedia.org.cn/")
     Observable<BaseModel<Object>> setTerminalStatus(@QueryMap Map<String,Object> map);
+
+    /**
+     * 下载文件
+     */
+    @GET
+    @Streaming
+    Observable<ResponseBody> downFile(@Url String fileUrl);
 }

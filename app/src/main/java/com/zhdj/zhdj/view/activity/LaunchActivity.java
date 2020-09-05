@@ -50,11 +50,13 @@ public class LaunchActivity extends BaseActivity {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mMainViewModel.isPaibo();
         mMainViewModel.isPaiModel.observe(this, ab -> {
-            if (ab) {
+            if (ab == 1) {
 //                startActivity(new Intent(this, ShowMessageActivity.class));
                 startActivity(new Intent(this, ShowMessageNewActivity.class));
-            } else {
+            } else if (ab == 0) {
                 startActivity(new Intent(this, MainActivity.class));
+            } else {
+                startActivity(new Intent(this, ShowMessageNewActivity.class));
             }
             this.finish();
         });

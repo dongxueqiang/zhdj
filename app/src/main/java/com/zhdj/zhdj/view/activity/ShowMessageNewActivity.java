@@ -41,6 +41,7 @@ import com.zhdj.zhdj.view.adapter.LoopViewAdapter;
 import com.zhdj.zhdj.view.service.GetMessageService;
 import com.zhdj.zhdj.view.weight.FullScreen;
 import com.zhdj.zhdj.viewmodel.MainViewModel;
+import com.zhdj.zhdj.viewmodel.UploadViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +89,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 
 
     private MainViewModel mMainViewModel;
+    private UploadViewModel uploadViewModel;
     private String mUrl;
     private int mIndex = 0;
     private boolean isFirst = true;
@@ -102,6 +104,7 @@ public class ShowMessageNewActivity extends BaseActivity {
     @Override
     protected void initData() {
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        uploadViewModel = ViewModelProviders.of(this).get(UploadViewModel.class);
         LiveEventBus.get(LiveEvent.REFRESH_SKIN, SkinModel.class).observe(this, skinModel -> {
             if (skinModel != null) {
                 updatePic(skinModel);
@@ -126,7 +129,7 @@ public class ShowMessageNewActivity extends BaseActivity {
                         mVideoView.stopPlayback();
                         webView.setVisibility(View.GONE);
                         if (isFirst || models.getIs_change() == 1) {
-                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
+//                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
                             setViewPager(models);
                         }
                     } else if (model.getResources_type() == 2) {//视频
@@ -199,7 +202,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "应该初于第" + pos + "张");
 
         long zaiyu = yushu % models.getRotation_time();
-        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
+//        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
 
         loopTime = models.getRotation_time() - zaiyu;
 //        Log.i("www", "应该睡眠" + loopTime + "毫秒");
@@ -207,8 +210,8 @@ public class ShowMessageNewActivity extends BaseActivity {
         long messStart = nowTime - yushu;
         long messEnd = messStart + models.getRotation_time();
 
-        Log.i("www", "start = " + TimeUtils.millis2String(messStart, new SimpleDateFormat(formatTime)));
-        Log.i("www", "  end = " + TimeUtils.millis2String(messEnd, new SimpleDateFormat(formatTime)));
+//        Log.i("www", "start = " + TimeUtils.millis2String(messStart, new SimpleDateFormat(formatTime)));
+//        Log.i("www", "  end = " + TimeUtils.millis2String(messEnd, new SimpleDateFormat(formatTime)));
 
         for (int i = 0; i < mList.size(); i++) {
             MessageModel messageModel = mList.get(i);
@@ -221,6 +224,7 @@ public class ShowMessageNewActivity extends BaseActivity {
             imageView = new ImageView(this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             Glide.with(this).load(messageModel.getImgs_url()).into(imageView);
+
             mImageList.add(imageView);
         }
         showModel = mList.get(nowPos);
