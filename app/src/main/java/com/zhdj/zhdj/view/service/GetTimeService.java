@@ -163,9 +163,9 @@ public class GetTimeService extends Service {
              * 第三个参数是重复周期，也就是下次提醒的间隔 毫秒值 我这里是一天后提醒
              */
             am.setExact(AlarmManager.RTC_WAKEUP, selectTime, pi);
-            Log.i("www", "关机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
+//            Log.i("www", "关机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
         } else {
-            Log.i("www", "开机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
+//            Log.i("www", "开机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
             GalleryNative.setOnTime_RTC(selectTime);
         }
 //        am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), (1000 * 60 * 60 * 24), pi);
