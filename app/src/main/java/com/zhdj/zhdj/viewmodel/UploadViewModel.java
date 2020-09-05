@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.zhdj.zhdj.base.BaseViewModel;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
@@ -83,9 +84,9 @@ public class UploadViewModel extends BaseViewModel {
      */
     public void saveFile(Bitmap bm, String name) throws IOException {
         //系统相册路径
-        String dirName = Environment.getExternalStorageDirectory() + File.separator + "zhdj";
+        String dirName = getFileDirName();
         //随机生成不同的名字
-        String fileName = name + ".jpg";
+        String fileName = name;
         //新创的文件夹的名字
         File jia = new File(dirName);
         //判断文件夹是否存在，不存在则创建
@@ -93,7 +94,7 @@ public class UploadViewModel extends BaseViewModel {
             jia.mkdirs();
         }
         File file = new File(jia, fileName);
-
+        Log.i("www", "save name = " + file.getName());
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 
@@ -114,7 +115,7 @@ public class UploadViewModel extends BaseViewModel {
 
     }
 
-    public String getFileDirName() {
+    public static String getFileDirName() {
         return Environment.getExternalStorageDirectory() + File.separator + "zhdj";
     }
 }

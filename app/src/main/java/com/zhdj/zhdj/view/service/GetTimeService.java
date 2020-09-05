@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.zhdj.zhdj.event.LiveEvent;
 import com.zhdj.zhdj.global.MyRequestCode;
+import com.zhdj.zhdj.model.BaseModel;
 import com.zhdj.zhdj.model.SkinModel;
 import com.zhdj.zhdj.model.TimeModel;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
@@ -45,8 +46,6 @@ public class GetTimeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        setScreenState(MyRequestCode.INTENT_ALARM_COLSE, MyRequestCode.CLOSE, null);
-        setScreenState(MyRequestCode.INTENT_ALARM_OPEN, MyRequestCode.OPEN, null);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,6 +68,16 @@ public class GetTimeService extends Service {
                                         }
                                     }
                                 }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            protected void onFailure(BaseModel<List<TimeModel>> model) {
+
                             }
 
                             @Override

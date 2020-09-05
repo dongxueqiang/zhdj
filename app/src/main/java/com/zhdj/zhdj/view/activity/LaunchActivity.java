@@ -6,11 +6,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.zhdj.zhdj.R;
 import com.zhdj.zhdj.base.BaseActivity;
 import com.zhdj.zhdj.view.receiver.ScreenOffAdminReceiver;
@@ -42,13 +46,7 @@ public class LaunchActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        tv1.setText(DeviceUtils.getMacAddress());
-//        tv2.setText(NetworkUtils.getIpAddressByWifi());
-//        adminReceiver = new ComponentName(LaunchActivity.this, ScreenOffAdminReceiver.class);
-//        startService(new Intent(this, GetTimeService.class));
-//        startService(new Intent(this, GetSkinService.class));
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        mMainViewModel.isPaibo();
         mMainViewModel.isPaiModel.observe(this, ab -> {
             if (ab == 1) {
 //                startActivity(new Intent(this, ShowMessageActivity.class));
@@ -60,7 +58,30 @@ public class LaunchActivity extends BaseActivity {
             }
             this.finish();
         });
+//        tv1.setText(DeviceUtils.getMacAddress());
+//        tv2.setText(NetworkUtils.getIpAddressByWifi());
+//        adminReceiver = new ComponentName(LaunchActivity.this, ScreenOffAdminReceiver.class);
+        startService(new Intent(this, GetTimeService.class));
+        startService(new Intent(this, GetSkinService.class));
+        PermissionUtils
+                .permission(PermissionConstants.STORAGE)
+                .callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+//                        getLatestVersion();
+                        mMainViewModel.isPaibo();
+                    }
 
+                    @Override
+                    public void onDenied() {
+                        new AlertDialog.Builder(LaunchActivity.this)
+                                .setTitle("提示")
+                                .setMessage("您拒绝了某些权限请求，部分功能将无法使用，前往设置中开启？")
+                                .setPositiveButton("确定", (dialog, which) -> AppUtils.launchAppDetailsSettings())
+                                .show();
+                    }
+                })
+                .request();
     }
 
     @Override

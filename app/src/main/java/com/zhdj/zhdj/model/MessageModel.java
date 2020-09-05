@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * @ClassName MessageModel
@@ -334,6 +335,37 @@ public class MessageModel implements Parcelable {
         this.endTime = in.readLong();
         this.is_self = in.readInt();
         this.num = in.readInt();
+    }
+
+    @Generated(hash = 1397409737)
+    public MessageModel(long id, String resources_name, int resources_type, String imgs_url,
+            String resources_url, String add_time, String edit_time, int tenant_id, String tenant_name,
+            int status, String audit_time, int running_state, int user_id, String resources_origin,
+            int is_delete, String ext, String file_name, String imgs_name, String department,
+            long startTime, long endTime, int is_self, int num) {
+        this.id = id;
+        this.resources_name = resources_name;
+        this.resources_type = resources_type;
+        this.imgs_url = imgs_url;
+        this.resources_url = resources_url;
+        this.add_time = add_time;
+        this.edit_time = edit_time;
+        this.tenant_id = tenant_id;
+        this.tenant_name = tenant_name;
+        this.status = status;
+        this.audit_time = audit_time;
+        this.running_state = running_state;
+        this.user_id = user_id;
+        this.resources_origin = resources_origin;
+        this.is_delete = is_delete;
+        this.ext = ext;
+        this.file_name = file_name;
+        this.imgs_name = imgs_name;
+        this.department = department;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.is_self = is_self;
+        this.num = num;
     }
 
     public static final Creator<MessageModel> CREATOR = new Creator<MessageModel>() {

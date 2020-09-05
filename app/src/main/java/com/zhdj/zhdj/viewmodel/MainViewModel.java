@@ -104,7 +104,7 @@ public class MainViewModel extends BaseViewModel {
                 });
     }
 
-    public void getMessageDetail(int id) {
+    public void getMessageDetail(long id) {
         Map<String, Object> map = new HashMap<>();
         map.put("s", "App.Module.DetailResources");
         map.put("id", id);

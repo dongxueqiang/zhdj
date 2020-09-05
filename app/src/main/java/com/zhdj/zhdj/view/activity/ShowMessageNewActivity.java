@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,10 @@ import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,7 +36,9 @@ import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
 import com.zhdj.zhdj.R;
 import com.zhdj.zhdj.base.BaseActivity;
+import com.zhdj.zhdj.dao.MessageDao;
 import com.zhdj.zhdj.event.LiveEvent;
+import com.zhdj.zhdj.global.SpConstant;
 import com.zhdj.zhdj.model.LiveMessageModel;
 import com.zhdj.zhdj.model.MessageModel;
 import com.zhdj.zhdj.model.SkinModel;
@@ -48,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,6 +103,7 @@ public class ShowMessageNewActivity extends BaseActivity {
     private boolean isFirst = true;
     private ProgressDialog mProgressDialog;
     private boolean needPlay = true;
+    private MessageDao messageDao;
 
     @Override
     protected int getLayoutId() {
@@ -103,6 +112,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        messageDao = new MessageDao(this);
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         uploadViewModel = ViewModelProviders.of(this).get(UploadViewModel.class);
         LiveEventBus.get(LiveEvent.REFRESH_SKIN, SkinModel.class).observe(this, skinModel -> {
@@ -180,7 +190,9 @@ public class ShowMessageNewActivity extends BaseActivity {
     private int nowPos = 0;
 
     private void setViewPager(LiveMessageModel models) {
+
         zuLunboTime = models.getRotation_time() * mList.size();
+        SPUtils.getInstance().put(SpConstant.ROTATION_TIME, models.getRotation_time());
 //        Log.i("www", "一组需要" + (zuLunboTime / 1000) + "秒");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(TimeUtils.getNowDate());
@@ -223,7 +235,13 @@ public class ShowMessageNewActivity extends BaseActivity {
             //初始化要显示的图片对象
             imageView = new ImageView(this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            Glide.with(this).load(messageModel.getImgs_url()).into(imageView);
+            Glide.with(this).load(messageModel.getImgs_url()).apply(new RequestOptions().error(R.drawable.ic_background)).into(imageView);
+            if (messageModel.getImgs_url().contains("http")) {
+                uploadViewModel.downloadFile(messageModel.getImgs_url(), messageModel.getImgs_name());
+                messageModel.setImgs_url(uploadViewModel.getFileDirName() + "/" + messageModel.getImgs_name());
+//                Log.i("www", "sets name = " + messageModel.getImgs_url());
+                messageDao.insertMessageModel(messageModel);
+            }
 
             mImageList.add(imageView);
         }

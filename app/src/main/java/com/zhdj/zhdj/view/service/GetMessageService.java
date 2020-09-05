@@ -9,12 +9,17 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.zhdj.zhdj.dao.MessageDao;
 import com.zhdj.zhdj.event.LiveEvent;
 import com.zhdj.zhdj.global.MyRequestCode;
+import com.zhdj.zhdj.global.SpConstant;
+import com.zhdj.zhdj.model.BaseModel;
 import com.zhdj.zhdj.model.LiveMessageModel;
 import com.zhdj.zhdj.model.MessageModel;
 import com.zhdj.zhdj.model.TimeModel;
@@ -22,6 +27,7 @@ import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
 import com.zhdj.zhdj.rxjava.CommonSchedulers;
 import com.zhdj.zhdj.view.receiver.AlarmReceiver;
+import com.zhdj.zhdj.viewmodel.UploadViewModel;
 
 import org.json.JSONArray;
 
@@ -36,10 +42,18 @@ import java.util.List;
  */
 public class GetMessageService extends Service {
 
+    private MessageDao messageDao;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        messageDao = new MessageDao(this);
     }
 
     @Override
@@ -55,10 +69,27 @@ public class GetMessageService extends Service {
                         .subscribe(new BaseObserver<LiveMessageModel>() {
                             @Override
                             protected void onSuccess(LiveMessageModel data) {
-                                if (data != null && data.getList().size()!=0) {
+                                if (data != null && data.getList().size() != 0) {
 //                                    if (data.get)
+                                    messageDao.deleteAll();
+                                    FileUtils.deleteAllInDir(UploadViewModel.getFileDirName());
                                     LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(data);
                                 }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                LiveMessageModel data = new LiveMessageModel();
+                                data.setIs_change(1);
+                                data.setRunning_state(1);
+                                data.setRotation_time(SPUtils.getInstance().getInt(SpConstant.ROTATION_TIME, 3000));
+                                data.setList(messageDao.queryAllMessageModel());
+                                LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(data);
+                            }
+
+                            @Override
+                            protected void onFailure(BaseModel<LiveMessageModel> model) {
+
                             }
 
                             @Override
