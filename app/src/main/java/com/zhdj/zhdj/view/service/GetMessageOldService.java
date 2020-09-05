@@ -44,7 +44,7 @@ public class GetMessageOldService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("www", "get message onStartCommand");
+//        Log.i("www", "get message onStartCommand");
         LiveMessageModel model = MessageUtils.getMessage();
         if (model != null) {
             LiveEventBus.get(LiveEvent.REFRESH_MESSAGE).post(model);

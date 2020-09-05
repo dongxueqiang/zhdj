@@ -1,12 +1,15 @@
 package com.zhdj.zhdj.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @ClassName TimeModel
  * @Author dongxueqiang
  * @Date 2020/7/19 19:54
  * @Title
  */
-public class TimeModel {
+public class TimeModel implements Parcelable {
     /**
      * id : 1
      * function_type : 1
@@ -35,7 +38,7 @@ public class TimeModel {
      * 1每天 2每星期 3每月
      */
     private int type;
-    private int day;
+    private String day;
     /**
      * 时间点
      */
@@ -88,11 +91,11 @@ public class TimeModel {
         this.type = type;
     }
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
@@ -159,4 +162,59 @@ public class TimeModel {
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.function_type);
+        dest.writeInt(this.group_id);
+        dest.writeString(this.group_name);
+        dest.writeInt(this.type);
+        dest.writeString(this.day);
+        dest.writeString(this.function_time);
+        dest.writeString(this.add_time);
+        dest.writeInt(this.range_type);
+        dest.writeInt(this.status);
+        dest.writeString(this.edit_time);
+        dest.writeInt(this.is_delete);
+        dest.writeInt(this.user_id);
+        dest.writeString(this.department);
+    }
+
+    public TimeModel() {
+    }
+
+    protected TimeModel(Parcel in) {
+        this.id = in.readInt();
+        this.function_type = in.readInt();
+        this.group_id = in.readInt();
+        this.group_name = in.readString();
+        this.type = in.readInt();
+        this.day = in.readString();
+        this.function_time = in.readString();
+        this.add_time = in.readString();
+        this.range_type = in.readInt();
+        this.status = in.readInt();
+        this.edit_time = in.readString();
+        this.is_delete = in.readInt();
+        this.user_id = in.readInt();
+        this.department = in.readString();
+    }
+
+    public static final Parcelable.Creator<TimeModel> CREATOR = new Parcelable.Creator<TimeModel>() {
+        @Override
+        public TimeModel createFromParcel(Parcel source) {
+            return new TimeModel(source);
+        }
+
+        @Override
+        public TimeModel[] newArray(int size) {
+            return new TimeModel[size];
+        }
+    };
 }

@@ -59,6 +59,7 @@ public class GetTimeService extends Service {
                                 if (data.size() == 2) {
                                     for (int i = 0; i < data.size(); i++) {
                                         TimeModel model = data.get(i);
+                                        Log.i("www", "date type = " + model.getFunction_type());
                                         if (model.getFunction_type() == 0) {
                                             //关机
                                             setScreenState(MyRequestCode.INTENT_ALARM_COLSE, MyRequestCode.CLOSE, model);
@@ -72,11 +73,12 @@ public class GetTimeService extends Service {
 
                             @Override
                             public void onError(Throwable e) {
-
+                                Log.i("www", "error");
                             }
 
                             @Override
                             protected void onFailure(BaseModel<List<TimeModel>> model) {
+                                Log.i("www", "onFailure");
 
                             }
 
@@ -107,6 +109,7 @@ public class GetTimeService extends Service {
         //得到日历实例，主要是为了下面的获取时间
         mCalendar = Calendar.getInstance();
         mCalendar.setTimeInMillis(System.currentTimeMillis());
+        mCalendar.set(Calendar.DAY_OF_MONTH, 8);
         //获取当前毫秒值
         long systemTime = System.currentTimeMillis();
 
@@ -118,10 +121,10 @@ public class GetTimeService extends Service {
 
         } else if (timeModel.getType() == 2) {
             //每星期
-            mCalendar.set(Calendar.DAY_OF_WEEK, timeModel.getDay());
+            mCalendar.set(Calendar.DAY_OF_WEEK, DateUtils.getDayByWeek(timeModel.getDay()));
         } else if (timeModel.getType() == 3) {
             //每月
-            mCalendar.set(Calendar.DAY_OF_MONTH, timeModel.getDay());
+            mCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.getDayByString(timeModel.getDay()));
         }
 
         //设置在几点提醒  设置的为13点
@@ -135,9 +138,17 @@ public class GetTimeService extends Service {
         long selectTime = mCalendar.getTimeInMillis();
         // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
         if (systemTime > selectTime) {
-            mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            if (timeModel.getType() == 1) {
+                mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            } else if (timeModel.getType() == 2) {
+                //每星期
+                mCalendar.add(Calendar.DAY_OF_MONTH, 7);
+            } else if (timeModel.getType() == 3) {
+                //每月
+                mCalendar.add(Calendar.MONTH, 1);
+            }
         }
-
+        selectTime = mCalendar.getTimeInMillis();
         if (i == MyRequestCode.CLOSE) {
             //AlarmReceiver.class为广播接受者
             Intent intent = new Intent(this, AlarmReceiver.class);
@@ -151,8 +162,10 @@ public class GetTimeService extends Service {
              * 第二个参数网上说法不一，很多都是说的是延迟多少毫秒执行这个闹钟，
              * 第三个参数是重复周期，也就是下次提醒的间隔 毫秒值 我这里是一天后提醒
              */
-            am.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
+            am.setExact(AlarmManager.RTC_WAKEUP, selectTime, pi);
+            Log.i("www", "关机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
         } else {
+            Log.i("www", "开机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
             GalleryNative.setOnTime_RTC(selectTime);
         }
 //        am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), (1000 * 60 * 60 * 24), pi);

@@ -94,7 +94,6 @@ public class UploadViewModel extends BaseViewModel {
             jia.mkdirs();
         }
         File file = new File(jia, fileName);
-        Log.i("www", "save name = " + file.getName());
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 

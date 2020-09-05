@@ -226,7 +226,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "应该初于第" + pos + "张");
 
         long zaiyu = yushu % models.getRotation_time();
-        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
+//        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
 
         loopTime = models.getRotation_time() - zaiyu;
 //        Log.i("www", "应该睡眠" + loopTime + "毫秒");

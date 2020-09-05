@@ -116,7 +116,7 @@ public class ShowMessageActivity extends BaseActivity {
                     mList.clear();
                     mList.addAll(models.getList());
                     MessageModel model = models.getList().get(0);
-                    Log.i("www", model.toString());
+//                    Log.i("www", model.toString());
                     if (model.getResources_type() == 1) {//播放图片
                         banner.setVisibility(View.VISIBLE);
                         mVideoView.setVisibility(View.GONE);
@@ -341,7 +341,7 @@ public class ShowMessageActivity extends BaseActivity {
                     break;
                 case 2:
                     tvStartTime.setText("开始时间\n" + TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
-                    Log.i("www", TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
+//                    Log.i("www", TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
                     banner.start();
                     banner.onPageSelected(3);
                     break;
