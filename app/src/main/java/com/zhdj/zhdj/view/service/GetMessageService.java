@@ -105,7 +105,7 @@ public class GetMessageService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 1 * 3000 * 1000;  //
+        int anHour = 5 * 60 * 1000;  //
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
         i.setAction(MyRequestCode.INTENT_ALARM_MESSAGE);
