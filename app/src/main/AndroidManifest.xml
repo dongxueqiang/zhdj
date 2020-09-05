@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sharedUserId="android.uid.system"
     package="com.zhdj.zhdj">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -34,9 +33,10 @@
         <activity android:name=".view.activity.ShowMessageActivity" />
         <activity android:name=".view.activity.ShowMessageNewActivity" />
         <activity android:name=".view.activity.ListActivity" />
-        <service android:name=".view.service.GetTimeService"/>
-        <service android:name=".view.service.GetMessageService"/>
-        <service android:name=".view.service.GetSkinService"/>
+
+        <service android:name=".view.service.GetTimeService" />
+        <service android:name=".view.service.GetMessageService" />
+        <service android:name=".view.service.GetSkinService" />
 
         <receiver android:name=".view.receiver.AlarmReceiver">
             <intent-filter>
