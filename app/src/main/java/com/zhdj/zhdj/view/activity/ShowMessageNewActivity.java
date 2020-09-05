@@ -121,11 +121,6 @@ public class ShowMessageNewActivity extends BaseActivity {
                 updatePic(skinModel);
             }
         });
-        LiveEventBus.get(LiveEvent.REFRESH_SKIN, SkinModel.class).observe(this, skinModel -> {
-            if (skinModel != null) {
-                updatePic(skinModel);
-            }
-        });
 
         startService(new Intent(this, GetMessageService.class));
         LiveEventBus.get(LiveEvent.REFRESH_MESSAGE, LiveMessageModel.class).observe(this, models -> {
