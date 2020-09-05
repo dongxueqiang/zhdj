@@ -19,6 +19,7 @@ public class SysPropUtils {
     public final static String PROP_STR = "ro.CVTE_EN_STR";
     public final static String PROP_AGING_FLAG = "persist.sys.AgingMode_T960";
     private static boolean isSTR = false;
+
     static {
         isSTR = get(PROP_STR, "0").equals("1");
     }
@@ -26,7 +27,7 @@ public class SysPropUtils {
     // String SystemProperties.get(String key){}
     public static void set(String key, String val) {
         init();
-
+        Log.i("www", "sys set key = " + key + ", val = " + val);
         try {
             mSetMethod.invoke(mClassType, key, val);
         } catch (Exception e) {
@@ -74,6 +75,7 @@ public class SysPropUtils {
     public static boolean isInAT() {
         return getInt(PROP_IN_AT, 0) == 1;
     }
+
     public static String getTopActivity() {
         return get(PROP_TOP_PKG, "");
     }
@@ -85,7 +87,7 @@ public class SysPropUtils {
     /**
      * 0->finish, 1->in fti, 2->has bound
      */
-    public static void setFTIStep(int step){
+    public static void setFTIStep(int step) {
         set(PROP_FTI_STEP, "" + step);
     }
 
@@ -94,7 +96,7 @@ public class SysPropUtils {
     }
 
     /**
-     *0->no upgrade, 1->wait to upgrade, 2->wait to delete
+     * 0->no upgrade, 1->wait to upgrade, 2->wait to delete
      */
     public static void setOTAStep(int step) {
         set(PROP_OTA_STEP, step + "");
@@ -111,6 +113,7 @@ public class SysPropUtils {
     public static boolean isAgingMode() {
         return get(PROP_AGING_FLAG, "0").equals("1");
     }
+
     //-------------------------------------------------------------------
     private static Class<?> mClassType = null;
     private static Method mSetMethod = null;
