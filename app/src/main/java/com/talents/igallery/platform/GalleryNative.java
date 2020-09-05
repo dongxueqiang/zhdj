@@ -1,4 +1,4 @@
-package com.zhdj.zhdj.utils;
+package com.talents.igallery.platform;
 
 /**
  * Created by user on 2018/10/18.

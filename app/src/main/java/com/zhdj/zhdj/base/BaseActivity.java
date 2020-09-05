@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.zhdj.zhdj.utils.SysPropUtils;
+import com.talents.igallery.platform.SysPropUtils;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;

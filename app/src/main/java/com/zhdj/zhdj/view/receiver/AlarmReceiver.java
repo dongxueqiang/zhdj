@@ -2,29 +2,19 @@ package com.zhdj.zhdj.view.receiver;
 
 import android.annotation.SuppressLint;
 import android.app.admin.DevicePolicyManager;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
-import android.util.Log;
 
-import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.zhdj.zhdj.global.MyRequestCode;
-import com.zhdj.zhdj.model.MessageModel;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
 import com.zhdj.zhdj.rxjava.CommonSchedulers;
-import com.zhdj.zhdj.utils.GalleryNative;
-import com.zhdj.zhdj.view.activity.MainActivity;
-import com.zhdj.zhdj.view.activity.SleepActivity;
 import com.zhdj.zhdj.view.service.GetMessageService;
 import com.zhdj.zhdj.view.service.GetSkinService;
 import com.zhdj.zhdj.view.service.GetTimeService;
-import com.zhdj.zhdj.viewmodel.MainViewModel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

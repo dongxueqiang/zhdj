@@ -9,21 +9,16 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.blankj.utilcode.util.TimeUtils;
-import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.zhdj.zhdj.event.LiveEvent;
 import com.zhdj.zhdj.global.MyRequestCode;
 import com.zhdj.zhdj.model.BaseModel;
-import com.zhdj.zhdj.model.SkinModel;
 import com.zhdj.zhdj.model.TimeModel;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
 import com.zhdj.zhdj.rxjava.CommonSchedulers;
 import com.zhdj.zhdj.utils.DateUtils;
-import com.zhdj.zhdj.utils.GalleryNative;
+import com.talents.igallery.platform.GalleryNative;
 import com.zhdj.zhdj.view.receiver.AlarmReceiver;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;

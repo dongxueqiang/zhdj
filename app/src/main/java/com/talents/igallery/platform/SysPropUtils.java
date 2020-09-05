@@ -1,4 +1,4 @@
-package com.zhdj.zhdj.utils;
+package com.talents.igallery.platform;
 
 import android.util.Log;
 
