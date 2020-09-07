@@ -112,7 +112,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-//        startService(new Intent(this, GetTimeService.class));
+        startService(new Intent(this, GetTimeService.class));
         startService(new Intent(this, GetSkinService.class));
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         uploadViewModel = ViewModelProviders.of(this).get(UploadViewModel.class);
