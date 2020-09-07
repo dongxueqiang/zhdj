@@ -103,7 +103,7 @@ public class GetMessageService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 1 * 60 * 1000; // 这是十分钟的毫秒数
+        int anHour = 1 * 15 * 1000; // 这是十分钟的毫秒数
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent i = new Intent(this, AlarmReceiver.class);
         i.setAction(MyRequestCode.INTENT_ALARM_MESSAGE);

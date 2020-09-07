@@ -73,7 +73,7 @@ public class ShowMessageNewActivity extends BaseActivity {
     ViewPager banner;
     @BindView(R.id.video_view)
     FullScreen mVideoView;
-//    @BindView(R.id.web_view)
+    //    @BindView(R.id.web_view)
 //    WebView webView;
     @BindView(R.id.rl_show)
     RelativeLayout rlShow;
@@ -127,8 +127,13 @@ public class ShowMessageNewActivity extends BaseActivity {
             if (models != null && models.getList().size() != 0) {
                 getLiveMessageModel = models;
                 needPlay = models.getRunning_state() == 1;
+                Log.i("www", "needPlay = "+needPlay);
                 if (needPlay) {
                     rlNoShow.setVisibility(View.GONE);
+                    ivBackground.setVisibility(View.GONE);
+                    ivLogo.setVisibility(View.GONE);
+                    llTime.setVisibility(View.GONE);
+
                     rlShow.setVisibility(View.VISIBLE);
                     MessageModel model = models.getList().get(0);
 //                    Log.i("www", model.toString());
@@ -138,7 +143,6 @@ public class ShowMessageNewActivity extends BaseActivity {
                         mVideoView.stopPlayback();
 //                        webView.setVisibility(View.GONE);
                         if (isFirst || models.getIs_change() == 1) {
-//                            startBanner(models.getRotation_time(), models.getRunning_state() == 1);
                             mList.clear();
                             mList.addAll(models.getList());
                             setViewPager(models);
@@ -172,10 +176,16 @@ public class ShowMessageNewActivity extends BaseActivity {
                     isFirst = false;
                 } else {
                     rlNoShow.setVisibility(View.VISIBLE);
+                    ivBackground.setVisibility(View.VISIBLE);
+                    ivLogo.setVisibility(View.VISIBLE);
+                    llTime.setVisibility(View.VISIBLE);
                     rlShow.setVisibility(View.GONE);
                     if (banner != null) {
-//                        banner.update(new ArrayList<>());
-//                        banner.stopAutoPlay();
+                        mList.clear();
+                        mImageList.clear();
+                        mAdapter=null;
+                        banner.setAdapter(mAdapter);
+                        banner.addOnPageChangeListener(null);
                     }
                     if (mVideoView != null && mVideoView.isPlaying()) {
                         mVideoView.stopPlayback();
@@ -193,9 +203,41 @@ public class ShowMessageNewActivity extends BaseActivity {
     private long zuLunboTime;
     private int nowPos = 0;
 
-    private void setViewPager(LiveMessageModel models) {
+    private void addViewPagerListener(){
+        banner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
 
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                Log.i("www", "i = "+i);
+                if (needPlay) {
+                    nowPos = i % mImageList.size();
+//                    Log.i("www", "现在的" + nowPos + " 结束时间为：" +
+//                            TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
+//                            + "需要睡眠" + (loopTime / 1000) + "秒");
+                    showModel = mList.get(nowPos);
+                    loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
+//                Log.i("www", "动完：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
+
+                    mHandler.sendEmptyMessageDelayed(3, loopTime);
+                    showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+    }
+
+    private void setViewPager(LiveMessageModel models) {
+        nowPos = 0;
         zuLunboTime = models.getRotation_time() * mList.size();
+        mImageList.clear();
         SPUtils.getInstance().put(SpConstant.ROTATION_TIME, models.getRotation_time());
 //        Log.i("www", "一组需要" + (zuLunboTime / 1000) + "秒");
         Calendar calendar = Calendar.getInstance();
@@ -236,10 +278,13 @@ public class ShowMessageNewActivity extends BaseActivity {
             } else {
                 messageModel.setEndTime(messEnd + (i * models.getRotation_time()));
             }
+//            Log.i("www", messageModel.getImgs_name());
             //初始化要显示的图片对象
             imageView = new ImageView(this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            Glide.with(this).load(messageModel.getImgs_url()).apply(new RequestOptions().error(R.drawable.ic_background)).into(imageView);
+            Glide.with(this).load(messageModel.getImgs_url())
+                    .apply(new RequestOptions().error(R.drawable.ic_background)
+                            .placeholder(R.drawable.ic_background)).into(imageView);
 
             mImageList.add(imageView);
         }
@@ -247,31 +292,7 @@ public class ShowMessageNewActivity extends BaseActivity {
         mAdapter = new LoopViewAdapter(mImageList);
         //设置适配器
         banner.setAdapter(mAdapter);
-        banner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
 
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                nowPos = i % mImageList.size();
-                showModel = mList.get(nowPos);
-                loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
-//                Log.i("www", "动完：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
-
-//                Log.i("www", "现在的" + nowPos+" 结束时间为："+
-//                        TimeUtils.millis2String(showModel.getEndTime(),new SimpleDateFormat(formatTime))
-//                        + "需要睡眠" + (loopTime/1000) + "秒");
-                mHandler.sendEmptyMessageDelayed(3, loopTime);
-                showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
         if (nowPos == 0) {
             showModel = mList.get(nowPos);
             loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
@@ -299,7 +320,9 @@ public class ShowMessageNewActivity extends BaseActivity {
                     break;
                 case 3:
 //                    Log.i("www", "要动：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
-                    banner.setCurrentItem(banner.getCurrentItem() + 1);
+                    if (needPlay) {
+                        banner.setCurrentItem(banner.getCurrentItem() + 1);
+                    }
                     break;
                 default:
                     break;
@@ -314,6 +337,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        addViewPagerListener();
         initVideoView();
         initWebView();
         setDate();

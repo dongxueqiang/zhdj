@@ -56,4 +56,9 @@ public class LoopViewAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object o) {
         return view == o;
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }
