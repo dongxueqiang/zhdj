@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -127,7 +128,7 @@ public class ShowMessageNewActivity extends BaseActivity {
             if (models != null && models.getList().size() != 0) {
                 getLiveMessageModel = models;
                 needPlay = models.getRunning_state() == 1;
-                Log.i("www", "needPlay = "+needPlay);
+                Log.i("www", "needPlay = " + needPlay);
                 if (needPlay) {
                     rlNoShow.setVisibility(View.GONE);
                     ivBackground.setVisibility(View.GONE);
@@ -183,7 +184,7 @@ public class ShowMessageNewActivity extends BaseActivity {
                     if (banner != null) {
                         mList.clear();
                         mImageList.clear();
-                        mAdapter=null;
+                        mAdapter = null;
                         banner.setAdapter(mAdapter);
                         banner.addOnPageChangeListener(null);
                     }
@@ -203,7 +204,7 @@ public class ShowMessageNewActivity extends BaseActivity {
     private long zuLunboTime;
     private int nowPos = 0;
 
-    private void addViewPagerListener(){
+    private void addViewPagerListener() {
         banner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -212,7 +213,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int i) {
-                Log.i("www", "i = "+i);
+                Log.i("www", "i = " + i);
                 if (needPlay) {
                     nowPos = i % mImageList.size();
 //                    Log.i("www", "现在的" + nowPos + " 结束时间为：" +
@@ -473,5 +474,16 @@ public class ShowMessageNewActivity extends BaseActivity {
                 .apply(new RequestOptions().error(R.drawable.ic_background)
                         .placeholder(R.drawable.ic_background)).into(ivBackground);
         Glide.with(this).load(skinModel.getLogo_url()).apply(new RequestOptions().error(R.drawable.ic_main_logo)).into(ivLogo);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent();
+            intent.setClassName("com.talents.igallery", "com.talents.igallery.MainActivity");
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
