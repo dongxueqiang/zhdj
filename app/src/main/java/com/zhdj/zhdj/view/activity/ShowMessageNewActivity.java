@@ -213,14 +213,13 @@ public class ShowMessageNewActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int i) {
-                Log.i("www", "i = " + i);
                 if (needPlay) {
                     nowPos = i % mImageList.size();
-//                    Log.i("www", "现在的" + nowPos + " 结束时间为：" +
-//                            TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
-//                            + "需要睡眠" + (loopTime / 1000) + "秒");
                     showModel = mList.get(nowPos);
                     loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
+                    Log.i("www", "现在的" + nowPos + " name = " + showModel.getImgs_name() + " 结束时间为：" +
+                            TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
+                            + "需要睡眠" + (loopTime / 1000) + "秒");
 //                Log.i("www", "动完：" + TimeUtils.getNowString(new SimpleDateFormat(formatTime)));
 
                     mHandler.sendEmptyMessageDelayed(3, loopTime);
@@ -254,6 +253,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "现在时间 = " + TimeUtils.millis2String(nowTime, new SimpleDateFormat(formatTime)));
 
         long cha = nowTime - startMills;
+        int lunshu = (int) (cha / zuLunboTime);
         long yushu = cha % zuLunboTime;
 //        Log.i("www", "应该多出来" + (yushu / 1000) + "秒");
 
@@ -261,10 +261,10 @@ public class ShowMessageNewActivity extends BaseActivity {
 //        Log.i("www", "应该初于第" + pos + "张");
 
         long zaiyu = yushu % models.getRotation_time();
-//        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
+        Log.i("www", "第" + nowPos + "张运行了" + (zaiyu / 1000) + "秒");
 
         loopTime = models.getRotation_time() - zaiyu;
-//        Log.i("www", "应该睡眠" + loopTime + "毫秒");
+        Log.i("www", "应该睡眠" + loopTime + "毫秒");
 
         long messStart = nowTime - yushu;
         long messEnd = messStart + models.getRotation_time();
@@ -294,16 +294,19 @@ public class ShowMessageNewActivity extends BaseActivity {
         //设置适配器
         banner.setAdapter(mAdapter);
 
-        if (nowPos == 0) {
-            showModel = mList.get(nowPos);
-            loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
-            mHandler.sendEmptyMessageDelayed(3, loopTime);
-            showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
-        }
+//        if (nowPos == 0) {
+//            showModel = mList.get(nowPos);
+//            loopTime = showModel.getEndTime() - TimeUtils.getNowMills();
+//
+//            Log.i("www", "现在的" + nowPos + " name = " + showModel.getImgs_name() + " 结束时间为：" +
+//                    TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
+//                    + "需要睡眠" + (loopTime / 1000) + "秒");
+//
+//            mHandler.sendEmptyMessageDelayed(3, loopTime);
+//            showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
+//        }
         // 把ViewPager设置为默认选中Integer.MAX_VALUE / t2，从十几亿次开始轮播图片，达到无限循环目的;
-        int m = (Integer.MAX_VALUE / 2) % mImageList.size();
-        int currentPosition = Integer.MAX_VALUE / 2 - m;
-        banner.setCurrentItem(nowPos);
+        banner.setCurrentItem(nowPos + (mImageList.size() * lunshu));
         isRunning = false;
     }
 

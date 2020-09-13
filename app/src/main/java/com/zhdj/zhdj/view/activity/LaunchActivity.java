@@ -8,21 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.TextView;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.zhdj.zhdj.R;
 import com.zhdj.zhdj.base.BaseActivity;
-import com.zhdj.zhdj.view.receiver.ScreenOffAdminReceiver;
 import com.zhdj.zhdj.view.service.GetSkinService;
 import com.zhdj.zhdj.view.service.GetTimeService;
 import com.zhdj.zhdj.viewmodel.MainViewModel;
-
-import butterknife.BindView;
 
 /**
  * @author : johnny

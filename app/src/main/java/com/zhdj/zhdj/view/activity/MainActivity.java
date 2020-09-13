@@ -1,10 +1,6 @@
 package com.zhdj.zhdj.view.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.admin.DevicePolicyManager;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,15 +8,11 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,18 +27,12 @@ import com.zhdj.zhdj.model.MessageModel;
 import com.zhdj.zhdj.model.SkinModel;
 import com.zhdj.zhdj.utils.DateUtils;
 import com.zhdj.zhdj.utils.Lunar;
-import com.zhdj.zhdj.view.receiver.AlarmReceiver;
-import com.zhdj.zhdj.view.receiver.ScreenOffAdminReceiver;
-import com.zhdj.zhdj.view.weight.GridSpacingItemDecoration;
-import com.zhdj.zhdj.view.weight.SpaceItemDecoration;
 import com.zhdj.zhdj.viewmodel.MainViewModel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
