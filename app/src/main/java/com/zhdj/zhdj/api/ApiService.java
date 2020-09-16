@@ -42,7 +42,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/?s=App.PublishFunction.FunctionDetail")
+    @GET("http://dj.qsmedia.org.cn/?s=App.PublishFunction.FunctionDetail")
     Observable<BaseModel<List<TimeModel>>> getTime();
     /**
      * 获取是否是排播设备
@@ -50,7 +50,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/?s=App.Terminal.TerminalUsed")
+    @GET("http://dj.qsmedia.org.cn/?s=App.Terminal.TerminalUsed")
     Observable<BaseModel<Integer>> isPaibo();
     /**
      * 获取排播信息
@@ -58,7 +58,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/?s=App.Terminal.TerminalDetail")
+    @GET("http://dj.qsmedia.org.cn/?s=App.Terminal.TerminalDetail")
     Observable<BaseModel<LiveMessageModel>> getPaibo();
     /**
      * 获取主屏皮肤
@@ -66,7 +66,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/?s=App.Module.DetailImgs")
+    @GET("http://dj.qsmedia.org.cn/?s=App.Module.DetailImgs")
     Observable<BaseModel<SkinModel>> getSkin();
     /**
      * 获取主界面菜单
@@ -74,7 +74,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/?s=App.Module.ModuleList")
+    @GET("http://dj.qsmedia.org.cn/?s=App.Module.ModuleList")
     Observable<BaseModel<List<MenuModel>>> getMainMenu();
     /**
      * 获取资讯
@@ -82,7 +82,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/")
+    @GET("http://dj.qsmedia.org.cn/")
     Observable<BaseModel<List<MessageModel>>> getMessage(@QueryMap Map<String,Object> map);
     /**
      * 获取资讯
@@ -90,7 +90,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @GET("http://qd.zhihuiqilu.cn/")
+    @GET("http://dj.qsmedia.org.cn/")
     Observable<BaseModel<MessageModel>> getMessageDetail(@QueryMap Map<String,Object> map);
     /**
      * 获取资讯
@@ -98,7 +98,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @POST("http://qd.zhihuiqilu.cn/")
+    @POST("http://dj.qsmedia.org.cn/")
     Observable<BaseModel<Object>> setPlayTerminal(@QueryMap Map<String,Object> map);
     /**
      * 设置终端状态
@@ -106,7 +106,7 @@ public interface ApiService {
      * @param
      * @return
      */
-    @POST("http://qd.zhihuiqilu.cn/")
+    @POST("http://dj.qsmedia.org.cn/")
     Observable<BaseModel<Object>> setTerminalStatus(@QueryMap Map<String,Object> map);
 
     /**

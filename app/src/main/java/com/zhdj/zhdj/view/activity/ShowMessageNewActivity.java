@@ -2,7 +2,6 @@ package com.zhdj.zhdj.view.activity;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,31 +9,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.constant.PermissionConstants;
-import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.loader.ImageLoader;
 import com.zhdj.zhdj.R;
 import com.zhdj.zhdj.base.BaseActivity;
 import com.zhdj.zhdj.event.LiveEvent;
@@ -57,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,6 +81,8 @@ public class ShowMessageNewActivity extends BaseActivity {
     LinearLayout llTime;
     @BindView(R.id.rl_no_show)
     RelativeLayout rlNoShow;
+    @BindView(R.id.tv_pos)
+    TextView tvPos;
 
     private List<MessageModel> mList = new ArrayList<>();
     private ArrayList<ImageView> mImageList = new ArrayList<>();
@@ -218,7 +209,7 @@ public class ShowMessageNewActivity extends BaseActivity {
 //                    Log.i("www", "现在的" + nowPos + " name = " + showModel.getImgs_name() + " 结束时间为：" +
 //                            TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
 //                            + "需要睡眠" + (loopTime / 1000) + "秒");
-
+                    tvPos.setText(String.format("%d / %d", nowPos, mImageList.size()));
                     mHandler.sendEmptyMessageDelayed(3, loopTime);
                     showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
                 }
@@ -272,7 +263,7 @@ public class ShowMessageNewActivity extends BaseActivity {
             //初始化要显示的图片对象
             ImageView imageView = new ImageView(ShowMessageNewActivity.this);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            Glide.with(this).load(messageModel.getImgs_url())
+            Glide.with(this).load(messageModel.getResources_url())
                     .apply(new RequestOptions().error(R.drawable.ic_background)
                             .placeholder(R.drawable.ic_background)).into(imageView);
 
