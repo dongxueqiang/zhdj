@@ -209,8 +209,8 @@ public class ShowMessageNewActivity extends BaseActivity {
 //                    Log.i("www", "现在的" + nowPos + " name = " + showModel.getImgs_name() + " 结束时间为：" +
 //                            TimeUtils.millis2String(showModel.getEndTime(), new SimpleDateFormat(formatTime))
 //                            + "需要睡眠" + (loopTime / 1000) + "秒");
-//                    tvPos.setText(String.format("%d / %d", (nowPos + 1), mImageList.size()));
-//                    tvPos.setVisibility(View.GONE);
+                    tvPos.setText(String.format("%d / %d", (nowPos + 1), mImageList.size()));
+                    tvPos.setVisibility(View.GONE);
                     mHandler.sendEmptyMessageDelayed(3, loopTime);
                     showModel.setEndTime(showModel.getEndTime() + zuLunboTime);
                 }
