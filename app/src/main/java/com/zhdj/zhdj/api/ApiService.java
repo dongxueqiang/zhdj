@@ -36,6 +36,9 @@ import retrofit2.http.Url;
  * @Title
  */
 public interface ApiService {
+//    String API = "http://qd.zhihuiqilu.cn/";
+    String API = "http://dj.qsmedia.org.cn/";
+
     /**
      * 获取开关机时间
      *
