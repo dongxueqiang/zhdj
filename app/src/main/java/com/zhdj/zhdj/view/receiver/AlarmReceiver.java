@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 
+import com.blankj.utilcode.util.DeviceUtils;
+import com.hisilicon.android.tvapi.impl.SystemManagerImpl;
 import com.zhdj.zhdj.global.MyRequestCode;
 import com.zhdj.zhdj.retrofit.RetrofitUtils;
 import com.zhdj.zhdj.rxjava.BaseObserver;
@@ -42,7 +44,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 //            Log.i("www", "我熄屏了");
             //设备使用状态上传
             setTerminalStatus(0);
-            shutdown(context);
+            if (DeviceUtils.getModel().contains("553")){
+                SystemManagerImpl.getInstance(context).shutDown();
+            }else {
+                shutdown(context);
+            }
         } else if (action == MyRequestCode.INTENT_ALARM_OPEN) {
 //            GalleryNative.setOnTime_RTC(1000);
 //            //设备使用状态上传

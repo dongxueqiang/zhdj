@@ -9,6 +9,8 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.blankj.utilcode.util.DeviceUtils;
+import com.hisilicon.android.tvapi.impl.SystemManagerImpl;
 import com.zhdj.zhdj.global.MyRequestCode;
 import com.zhdj.zhdj.model.BaseModel;
 import com.zhdj.zhdj.model.TimeModel;
@@ -145,6 +147,7 @@ public class GetTimeService extends Service {
         }
         selectTime = mCalendar.getTimeInMillis();
         if (i == MyRequestCode.CLOSE) {
+            //设置定时关机的广播
             //AlarmReceiver.class为广播接受者
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.setAction(intentAlarmLog);
@@ -160,8 +163,16 @@ public class GetTimeService extends Service {
             am.setExact(AlarmManager.RTC_WAKEUP, selectTime, pi);
 //            Log.i("www", "关机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
         } else {
+            //设置定时开机
 //            Log.i("www", "开机时间 = " + TimeUtils.millis2String(selectTime, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")));
-            GalleryNative.setOnTime_RTC(selectTime);
+            if (DeviceUtils.getModel().contains("553")){
+                SystemManagerImpl.getInstance(this).setPowerOn(mCalendar.get(Calendar.YEAR)
+                ,mCalendar.get(Calendar.MONTH)+1,mCalendar.get(Calendar.DAY_OF_MONTH)
+                        ,mCalendar.get(Calendar.HOUR_OF_DAY),mCalendar.get(Calendar.MINUTE),1);
+            }else {
+                GalleryNative.setOnTime_RTC(selectTime);
+            }
+
         }
 //        am.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), (1000 * 60 * 60 * 24), pi);
     }
