@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
+import android.util.DebugUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -104,6 +107,8 @@ public class ShowMessageNewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        new AlertDialog.Builder(this)
+                .setMessage(DeviceUtils.getModel()).show();
         startService(new Intent(this, GetTimeService.class));
         startService(new Intent(this, GetSkinService.class));
         mMainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
